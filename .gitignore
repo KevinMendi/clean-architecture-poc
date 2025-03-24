@@ -1,0 +1,86 @@
+# Build Folders
+bin/
+obj/
+out/
+
+# User-specific Files (Visual Studio)
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Backup & Autosave Files
+*.bak
+*.orig
+*.tmp
+
+# Configuration Files (Secrets, Environment)
+secrets.json
+.env
+.env.*
+
+# ASP.NET Configuration Files
+appsettings.*.json
+appsettings.local.json
+appsettings.Development.json
+appsettings.QA.json
+appsettings.Staging.json
+appsettings.Production.json
+
+# NuGet Packages and Lock Files
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Rider Files (JetBrains IDE)
+.idea/
+.idea/*
+.idea/modules.xml
+.idea/workspace.xml
+.idea/.idea-name
+*.iml
+
+# Visual Studio Code Files
+.vscode/
+.vscode/*
+launch.json
+tasks.json
+
+# Entity Framework Migrations
+Migrations/
+
+# Logs
+*.log
+logs/
+log/
+
+# Generated Files
+*.Generated.cs
+*.g.cs
+*.AssemblyInfo.cs
+*.Swagger
+
+# Coverage and Test Results
+TestResults/
+*.coverage
+*.coveragexml
+coverage/
+
+# Publish Folder
+publish/
+*.Publish.xml
+
+# Resharper Files (JetBrains)
+_ReSharper.Caches/
+
+# OS-Specific Files
+.DS_Store
+Thumbs.db
+
+# Temporary & IDE Cache Files
+*.cache
+*.idea/workspace.xml
+*.rideruserprefs

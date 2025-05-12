@@ -14,6 +14,12 @@ namespace Bookify.Domain.Users
             Email = email;
         }
 
+        // To resolve migration issue for rich model domain
+        private User()
+        {
+
+        }
+
         public FirstName FirstName { get; private set; }
 
         public LastName LastName { get; private set; }

@@ -24,9 +24,11 @@ namespace Bookify.Domain.Reviews
             CreatedOnUtc = createdOnUtc;
         }
 
-        //private Review()
-        //{
-        //}
+        // To resolve migration issue for rich model domain
+        private Review()
+        {
+
+        }
 
         public Guid ApartmentId { get; private set; }
 

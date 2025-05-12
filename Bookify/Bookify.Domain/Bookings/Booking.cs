@@ -32,6 +32,12 @@ namespace Bookify.Domain.Bookings
             CreatedOnUtc = createdOnUtc;
         }
 
+        // To resolve migration issue for rich model domain
+        private Booking()
+        {
+
+        }
+
         public Guid ApartmentId { get; private set; }
 
         public Guid UserId { get; private set; }

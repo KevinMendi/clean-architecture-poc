@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  bookify.api:
+    image: ${DOCKER_REGISTRY-}bookifyapi
+    container_name: Bookify.Api
+    build:
+      context: .
+      dockerfile: Bookify.Api/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - bookify-db
+
+  bookify-db:
+    image: postgres:latest
+    container_name: Bookify.Db
+    environment:
+      - POSTGRES_DB=bookify
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+        # ./containers/database This is where Docker will store the database data. It ensures data isn't lost when the container is stopped or removed.
+        # /var/lib/postgresql/data The default directory inside the Postgres container where it saves database files.
+      - ./containers/database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432

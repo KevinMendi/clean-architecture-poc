@@ -9,6 +9,12 @@
             Id = id;
         }
 
+        // To resolve migration issue for rich model domain
+        protected Entity()
+        {
+
+        }
+
         public Guid Id { get; init; }
 
         public IReadOnlyList<IDomainEvent> GetDomainEvents()

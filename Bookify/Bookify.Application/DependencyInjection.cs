@@ -1,4 +1,6 @@
-﻿using Bookify.Domain.Bookings;
+﻿using Bookify.Application.Abstractions.Behaviors;
+using Bookify.Domain.Bookings;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bookify.Application
@@ -11,7 +13,14 @@ namespace Bookify.Application
             {
                 // This will be wiring app the comand and command handlers, and the query and query handlers
                 configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+
+                configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
+
+                configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
+
+            // This is going to scan the assembly for all the classes that implement the IValidator interface
+            services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
 
             services.AddTransient<PricingService>();
 

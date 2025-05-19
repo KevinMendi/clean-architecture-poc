@@ -6,7 +6,7 @@ services:
     container_name: Bookify.Api
     build:
       context: .
-      dockerfile: Bookify.Api/Dockerfile
+      dockerfile: src/Bookify.Api/Dockerfile
     ports:
       - "8080:8080"
       - "8081:8081"
@@ -26,3 +26,17 @@ services:
       - ./containers/database:/var/lib/postgresql/data
     ports:
       - 5432:5432
+
+  bookify-idp:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: Bookify.Identity
+    command: start-dev --import-realm
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    volumes:
+      - ./.containers/identity:/opt/keycloak/data
+      - ./.files/bookify-realm-export.json:/opt/keycloak/data/import/bookify-realm-export.json
+    ports:
+      - 18080:8080
+

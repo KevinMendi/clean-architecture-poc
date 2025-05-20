@@ -27,6 +27,8 @@ namespace Bookify.Infrastructure.Configurations
             // Defined index on Email property/column in the database
             // This is a DB constraint that ensures that the email address is unique across all users
             builder.HasIndex(user => user.Email).IsUnique();
+
+            builder.HasIndex(user => user.IdentityId).IsUnique();
         }
     }
 }

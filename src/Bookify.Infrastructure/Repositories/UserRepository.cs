@@ -1,9 +1,4 @@
 ﻿using Bookify.Domain.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bookify.Infrastructure.Repositories
 {
@@ -12,6 +7,18 @@ namespace Bookify.Infrastructure.Repositories
         public UserRepository(ApplicationDbContext dbContext)
             : base(dbContext)
         {
+        }
+
+        public override void Add(User user)
+        {
+            foreach (var role in user.Roles)
+            {
+                // This will tell efcore that any roles present on User object are already inside of the database
+                // and no need to insert them again
+                DbContext.Attach(role);
+            }
+
+            DbContext.Add(user);
         }
     }
 }

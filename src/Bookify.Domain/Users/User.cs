@@ -5,6 +5,8 @@ namespace Bookify.Domain.Users
 {
     public sealed class User : Entity
     {
+        private readonly List<Role> _roles = new();
+
         //different approach to create an Entity (Making constructor private)
         private User(Guid id, FirstName firstName, LastName lastName, Email email)
             : base(id) 
@@ -28,12 +30,16 @@ namespace Bookify.Domain.Users
 
         public string IdentityId { get; private set; }
 
+        public IReadOnlyCollection<Role> Roles => _roles.ToList();
+
         //This is an Entity factory
         public static User Create(FirstName firstName, LastName lastName, Email email)
         {
             var user = new User(Guid.NewGuid(), firstName, lastName, email);
 
             user.RaiseDomainEvent(new UserCreatedDomainEvent(user.Id));
+
+            user._roles.Add(Role.Registered);
 
             return user;
         }

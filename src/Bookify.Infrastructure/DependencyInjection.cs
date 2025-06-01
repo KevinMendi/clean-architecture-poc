@@ -7,12 +7,14 @@ using Bookify.Domain.Apartments;
 using Bookify.Domain.Bookings;
 using Bookify.Domain.Users;
 using Bookify.Infrastructure.Authentication;
+using Bookify.Infrastructure.Authorization;
 using Bookify.Infrastructure.Clock;
 using Bookify.Infrastructure.Data;
 using Bookify.Infrastructure.Email;
 using Bookify.Infrastructure.Repositories;
 using Dapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +32,8 @@ namespace Bookify.Infrastructure
             AddPersistence(services, configuration);
 
             AddAuthentication(services, configuration);
+
+            AddAuthorization(services);
 
             return services;
         }
@@ -60,6 +64,21 @@ namespace Bookify.Infrastructure
 
                 httpclient.BaseAddress = new Uri(keycloakOptions.TokenUrl);
             });
+
+            services.AddHttpContextAccessor();
+
+            services.AddScoped<IUserContext, UserContext>();
+        }
+
+        private static void AddAuthorization(IServiceCollection services)
+        {
+            services.AddScoped<AuthorizationService>();
+
+            services.AddTransient<Microsoft.AspNetCore.Authentication.IClaimsTransformation, CustomClaimsTransformation>();
+
+            services.AddTransient<IAuthorizationHandler, CustomPermissionAuthorizationHandler>();
+
+            services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
         }
 
         private static void AddPersistence(IServiceCollection services, IConfiguration configuration)

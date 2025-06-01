@@ -9,9 +9,7 @@ namespace Bookify.Domain.Bookings
         {
             var currency = apartment.Price.Currency;
 
-            var priceForPeriod = new Money(
-                apartment.Price.Amount * period.LengthInDays,
-                currency);
+            var priceForPeriod = new Money(apartment.Price.Amount * period.LengthInDays, currency);
 
             decimal percentageUpCharge = 0;
             foreach (var amenity in apartment.Amenities)
@@ -26,26 +24,18 @@ namespace Bookify.Domain.Bookings
             }
 
             var amenitiesUpCharge = Money.Zero(currency);
-            if(percentageUpCharge > 0)
-            {
-                amenitiesUpCharge = new Money(
-                    priceForPeriod.Amount * percentageUpCharge,
-                    currency);
-            }
+            if (percentageUpCharge > 0)
+                amenitiesUpCharge = new Money(priceForPeriod.Amount * percentageUpCharge, currency);
 
-            var totalPrice = Money.Zero();
-
+            var totalPrice = Money.Zero(currency);
             totalPrice += priceForPeriod;
 
-            if(!apartment.CleaningFee.IsZero())
-            {
+            if (!apartment.CleaningFee.IsZero())
                 totalPrice += apartment.CleaningFee;
-            }
 
             totalPrice += amenitiesUpCharge;
 
             return new PricingDetails(priceForPeriod, apartment.CleaningFee, amenitiesUpCharge, totalPrice);
-
         }
     }
 }

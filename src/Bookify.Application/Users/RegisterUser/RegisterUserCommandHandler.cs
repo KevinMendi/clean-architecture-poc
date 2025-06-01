@@ -34,10 +34,11 @@ namespace Bookify.Application.Users.RegisterUser
                 new LastName(request.LastName),
                 new Email(request.Email));
 
+            //NOTE: We are not saving our roles as part of the Kecloack Identity Provider
             var identityId = await _authenticationService.RegisterAsync(
                 user,
                 request.Password,
-                cancellationToken);
+                cancellationToken);         
 
             user.SetIdentityId(identityId);
 

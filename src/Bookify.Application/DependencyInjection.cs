@@ -17,6 +17,8 @@ namespace Bookify.Application
                 configuration.AddOpenBehavior(typeof(LoggingBehavior<,>));
 
                 configuration.AddOpenBehavior(typeof(ValidationBehavior<,>));
+
+                configuration.AddOpenBehavior(typeof(QueryCachingBehavior<,>));
             });
 
             // This is going to scan the assembly for all the classes that implement the IValidator interface

@@ -1,4 +1,5 @@
-﻿using Bookify.Application.Users.GetLoggedInUser;
+﻿using Asp.Versioning;
+using Bookify.Application.Users.GetLoggedInUser;
 using Bookify.Application.Users.LogInUser;
 using Bookify.Application.Users.RegisterUser;
 using Bookify.Infrastructure.Authorization;
@@ -9,7 +10,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace Bookify.Api.Controllers.Users
 {
     [ApiController]
-    [Route("api/users")]
+    // [ApiVersion(1)] // Prefer using a constant to avoid mistyping the version
+    // [ApiVersion(ApiVersions.V1, Deprecated = true)] // This is how to deprecate API version
+
+    //List all available API versions
+    [ApiVersion(ApiVersions.V1)]
+    [ApiVersion(ApiVersions.V2)]
+    [Route("api/v{version:apiVersion}/users")]
     public class UsersController : ControllerBase
     {
         private readonly ISender _sender;
@@ -21,8 +28,22 @@ namespace Bookify.Api.Controllers.Users
 
         [HttpGet("me")]
         // [Authorize(Roles = Roles.Registered)] // Role-based Authorization
+        [MapToApiVersion(ApiVersions.V1)]
         [HasPermission(Permissions.UsersRead)]
-        public async Task<IActionResult> GetLoggedInUser(CancellationToken cancellationToken)
+        public async Task<IActionResult> GetLoggedInUserV1(CancellationToken cancellationToken)
+        {
+            var query = new GetLoggedInUserQuery();
+
+            var result = await _sender.Send(query, cancellationToken);
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet("me")]
+        // [Authorize(Roles = Roles.Registered)] // Role-based Authorization
+        [MapToApiVersion(ApiVersions.V2)]
+        [HasPermission(Permissions.UsersRead)]
+        public async Task<IActionResult> GetLoggedInUserV2(CancellationToken cancellationToken)
         {
             var query = new GetLoggedInUserQuery();
 

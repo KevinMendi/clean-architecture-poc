@@ -35,37 +35,35 @@ namespace Bookify.Application.Bookings.ReserveBooking
 
         public async Task<Result<Guid>> Handle(ReserveBookingCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken);
+            User? user = await _userRepository.GetByIdAsync(request.UserId, cancellationToken);
 
-            if(user is null)
+            if (user is null)
             {
                 return Result.Failure<Guid>(UserErrors.NotFound);
             }
 
-            var apartment = await _apartmentRepository.GetByIdAsync(request.ApartmentId, cancellationToken);
+            Apartment? apartment = await _apartmentRepository.GetByIdAsync(request.ApartmentId, cancellationToken);
 
-            if(apartment is null)
+            if (apartment is null)
             {
                 return Result.Failure<Guid>(ApartmentErrors.NotFound);
             }
 
             var duration = DateRange.Create(request.StartDate, request.EndDate);
 
-            // Perform optimistic check on the database to see if we are overlapping for this apartment booking
-            if(await _bookingRepository.IsOverlappingAsync(apartment, duration, cancellationToken))
+            if (await _bookingRepository.IsOverlappingAsync(apartment, duration, cancellationToken))
             {
                 return Result.Failure<Guid>(BookingErrors.Overlap);
             }
 
-
             try
             {
                 var booking = Booking.Reserve(
-                apartment,
-                user.Id,
-                duration,
-                _dateTimeProvider.UtcNow,
-                _pricingService);
+                    apartment,
+                    user.Id,
+                    duration,
+                    _dateTimeProvider.UtcNow,
+                    _pricingService);
 
                 _bookingRepository.Add(booking);
 

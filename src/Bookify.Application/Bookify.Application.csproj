@@ -18,4 +18,9 @@
     <ProjectReference Include="..\Bookify.Domain\Bookify.Domain.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<!--Allow any internal members in the application project visible to the Assembly specified below -->
+		<InternalsVisibleTo Include="Bookify.Application.UnitTests"/>
+	</ItemGroup>
+
 </Project>

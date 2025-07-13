@@ -84,7 +84,10 @@ namespace Bookify.Api.Controllers.Users
 
             var result = await _sender.Send(command, cancellationToken);
 
-            if (result.IsFailure) return BadRequest(result.Error);
+            if (result.IsFailure)
+            {
+                return Unauthorized(result.Error);
+            }
 
             return Ok(result.Value);
         }

@@ -45,7 +45,7 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations();
 
     //Run once
-    //app.SeedData();
+    app.SeedData();
 }
 
 app.UseHttpsRedirection();
@@ -69,3 +69,6 @@ app.MapHealthChecks("health", new HealthCheckOptions
 
 
 app.Run();
+
+// Workaround - For WebApplicationFactory entry point
+public partial class Program;
